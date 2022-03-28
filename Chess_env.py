@@ -134,16 +134,16 @@ class Chess_Env:
             Done = 1       # The epsiode ends
             R = 10          # Reward for checkmate
             allowed_a=[]   # Allowed_a set to nothing (end of the episode)
-            X=self.Features()           # Features set to nothing (end of the episode)
+            X=[]           # Features set to nothing (end of the episode)
         
         # CASE OF DRAW
         elif np.sum(self.dfk2_constrain) == 0 and self.dfq1[self.p_k2[0], self.p_k2[1]] == 0:
            
             # King 2 has no freedom but it is not checked
             Done = 1        # The epsiode ends
-            R = -1       # Reward for draw
+            R = 0       # Reward for draw
             allowed_a=[]    # Allowed_a set to nothing (end of the episode)
-            X=self.Features()            # Features set to nothing (end of the episode)
+            X=[]            # Features set to nothing (end of the episode)
         
         # THE GAME CONTINUES
         else:
@@ -154,7 +154,8 @@ class Chess_Env:
             a_enemy = allowed_enemy_a[a_help]
 
             direction = a_enemy
-            steps = 2
+            steps = 1
+            R=1
 
             self.Board[self.p_k2[0], self.p_k2[1]] = 0
             mov = self.map[direction, :] * steps
