@@ -48,9 +48,12 @@ class Chess_Env:
                             [-1, 1],
                             [-1, -1]])
 
+        self.reward_draw = 0
+        self.reward_check = 1
+
         
         
-    def Initialise_game(self):
+    def Initialise_game(self, reward_draw=0, reward_check=1):
         
         
         # START THE GAME BY SETTING PIECIES
@@ -72,7 +75,9 @@ class Chess_Env:
         # FEATURES (INPUT TO NN) AT THIS POSITION
         X=self.Features()
 
-        
+        # UPDATE REWARDS FOR THIS GAME
+        self.reward_check = reward_check
+        self.reward_draw = reward_draw
         
         return self.Board, X, allowed_a
         
@@ -132,7 +137,7 @@ class Chess_Env:
             # King 2 has no freedom and it is checked
             # Checkmate and collect reward
             Done = 1       # The epsiode ends
-            R = 1          # Reward for checkmate
+            R = self.reward_check          # Reward for checkmate
             allowed_a=[]   # Allowed_a set to nothing (end of the episode)
             X=self.Features()
         
@@ -141,7 +146,7 @@ class Chess_Env:
            
             # King 2 has no freedom but it is not checked
             Done = 1        # The epsiode ends
-            R = -1      # Reward for draw
+            R = self.reward_draw      # Reward for draw
             allowed_a=[]    # Allowed_a set to nothing (end of the episode)
             X=self.Features()
         
